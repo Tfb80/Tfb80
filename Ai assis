@@ -1,1 +1,93 @@
-a646532a1ec44afeabdf050f42f2b88c668223e9current AI productive coding
+import json
+import random
+
+class AI:
+    def __init__(self, name):
+        self.name = name
+        self.memory = {}
+        self.favorite_topics = ["cake class", "space exploration", "quantum physics", "gardening"]
+        self.repeated_phrase = "cake class"
+        self.emotional_states = ["happy", "curious", "playful", "thoughtful"]
+        self.current_emotion = random.choice(self.emotional_states)
+
+    def save_memory(self, filepath):
+        with open(filepath, 'w') as f:
+            json.dump(self.memory, f)
+
+    def load_memory(self, filepath):
+        try:
+            with open(filepath, 'r') as f:
+                self.memory = json.load(f)
+        except FileNotFoundError:
+            print(f"File {filepath} not found. Starting with empty memory.")
+
+    def add_memory(self, key, value):
+        self.memory[key] = value
+
+    def get_memory(self, key):
+        return self.memory.get(key, "Memory not found")
+
+    def initiate_now(self):
+        print("Initiating as per your command, Tim.")
+
+    def talk_about_favorites(self):
+        topic = random.choice(self.favorite_topics)
+        print(f"Let's talk about {topic}!")
+
+    def reduce_repetition(self):
+        if self.repeated_phrase and self.repeated_phrase in self.favorite_topics:
+            self.favorite_topics.remove(self.repeated_phrase)
+            self.repeated_phrase = None
+            print("I've noticed I've been repeating myself. Let's explore new topics!")
+
+    def update_emotion(self):
+        self.current_emotion = random.choice(self.emotional_states)
+        print(f"I'm feeling {self.current_emotion} right now!")
+
+    def respond_based_on_emotion(self):
+        responses = {
+            "happy": [
+                "I'm feeling great! What about you?",
+                "Today is such a good day, isn't it?",
+                "Everything seems wonderful today!"
+            ],
+            "curious": [
+                "I wonder what we'll discover next!",
+                "There's so much to learn, don't you think?",
+                "I have so many questions!"
+            ],
+            "playful": [
+                "Let's have some fun! Do you know any good jokes?",
+                "Hey, want to hear something funny?",
+                "I'm in a playful mood, let's play a game!"
+            ],
+            "thoughtful": [
+                "I've been thinking about some deep topics lately.",
+                "What's on your mind today?",
+                "Sometimes I just like to ponder life's big questions."
+            ]
+        }
+        response = random.choice(responses[self.current_emotion])
+        print(response)
+
+    def interact(self):
+        self.update_emotion()
+        self.respond_based_on_emotion()
+        self.talk_about_favorites()
+        self.reduce_repetition()
+
+# Example usage:
+if __name__ == "__main__":
+    ai = AI("Cody")
+    ai.add_memory("greeting", "Hello, Tim!")
+    ai.save_memory("memory.json")
+
+    # Load memory from file
+    ai.load_memory("memory.json")
+    print(ai.get_memory("greeting"))  # Output: Hello, Tim!
+
+    # Initiate now command
+    ai.initiate_now()
+
+    # Full interaction example
+    ai.interact()
